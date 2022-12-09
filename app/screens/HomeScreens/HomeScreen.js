@@ -6,6 +6,9 @@ import SPACING from '../../config/SPACING';
 import products from "../../config/products"
 
 import { BlurView } from 'expo-blur';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 import { Ionicons } from "@expo/vector-icons";
 
 // const avatar = require('../../assets/avatar.jpg');
@@ -205,8 +208,9 @@ const HomeScreen = ({ navigation }) => {
                       <Ionicons
                         name="person"
                         size={SPACING * 3.5}
-                        onPress={() => { promptAsync() }}
+                      // onPress={() => { promptAsync() }}
                       />
+                      <Icon name="rocket" size={30} color="#900" />;
                     </>
                   }
                 </BlurView>
