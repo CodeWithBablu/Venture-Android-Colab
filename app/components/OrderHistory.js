@@ -4,8 +4,8 @@ import { FONTS } from '../config'
 import colors from '../config/colors'
 import SPACING from '../config/SPACING'
 
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { Ionicons } from '@expo/vector-icons';
 
 const OrderHistory = ({ item }) => {
   return (
@@ -13,6 +13,7 @@ const OrderHistory = ({ item }) => {
       flex: 1,
       alignItems: "center",
       marginTop: SPACING * 2,
+      color: colors.dark,
     }}>
       <View style={{
         width: "90%",
@@ -42,6 +43,7 @@ const OrderHistory = ({ item }) => {
 
           <Text style={{
             fontFamily: FONTS.bold,
+            color: colors.dark,
             fontSize: SPACING * 1.6,
           }}>{item.name}</Text>
 

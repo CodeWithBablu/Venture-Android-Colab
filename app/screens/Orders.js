@@ -20,7 +20,6 @@ const Orders = () => {
     }}>
       <SafeAreaView style={{
         flex: 1,
-        marginTop: StatusBar.currentHeight,
       }}>
 
         <View style={{

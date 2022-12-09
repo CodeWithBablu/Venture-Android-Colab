@@ -1,7 +1,8 @@
 import { Dimensions, ImageBackground, SafeAreaView, ScrollView, StyleSheet, StatusBar, Text, View, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 import SPACING from "../../config/SPACING";
 import colors from "../../config/colors";
@@ -28,9 +29,7 @@ const ProductDetails = ({ route, navigation }) => {
       backgroundColor: colors.dark,
     }}>
       <ScrollView>
-        <SafeAreaView style={{
-          marginTop: StatusBar.currentHeight,
-        }}>
+        <SafeAreaView>
           <ImageBackground
             style={{
               height: height / 2 + SPACING * 2,

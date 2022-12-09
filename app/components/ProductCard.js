@@ -4,7 +4,8 @@ import { FONTS } from '../config'
 import colors from '../config/colors'
 import SPACING from '../config/SPACING'
 
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 const ProductCard = ({ item }) => {
   return (
@@ -12,6 +13,7 @@ const ProductCard = ({ item }) => {
       flex: 1,
       alignItems: "center",
       marginTop: SPACING * 2,
+      color: colors.dark,
     }}>
       <View style={{
         width: "90%",
@@ -40,11 +42,13 @@ const ProductCard = ({ item }) => {
           <Text style={{
             fontFamily: FONTS.bold,
             fontSize: SPACING * 1.6,
+            color: colors.dark,
           }}>{item.name}</Text>
 
           <Text style={{
-            fontFamily: FONTS.medium,
+            fontFamily: FONTS.semiBold,
             fontSize: SPACING * 1.5,
+            color: colors.dark,
           }}>Rs. {item.price}</Text>
 
           <View style={{

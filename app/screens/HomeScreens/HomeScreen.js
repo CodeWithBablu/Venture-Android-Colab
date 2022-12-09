@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet, Text, View, StatusBar, ScrollView, TouchableOpacity, Image, Dimensions } from "react-native";
+import { SafeAreaView, StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, Dimensions } from "react-native";
 import React, { useState, useEffect } from "react";
 
 import colors from '../../config/colors';
@@ -7,9 +7,8 @@ import products from "../../config/products"
 
 import { BlurView } from 'expo-blur';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { Ionicons } from "@expo/vector-icons";
 
 // const avatar = require('../../assets/avatar.jpg');
 const logo = require('../../../assets/logo.png');
@@ -116,7 +115,6 @@ const HomeScreen = ({ navigation }) => {
       backgroundColor: colors.dark,
     }}>
       <SafeAreaView style={{
-        marginTop: StatusBar.currentHeight,
         marginBottom: SPACING * 10,
         backgroundColor: colors.dark,
       }}>
@@ -208,9 +206,9 @@ const HomeScreen = ({ navigation }) => {
                       <Ionicons
                         name="person"
                         size={SPACING * 3.5}
+                        color={colors.dark}
                       // onPress={() => { promptAsync() }}
                       />
-                      <Icon name="rocket" size={30} color="#900" />;
                     </>
                   }
                 </BlurView>

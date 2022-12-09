@@ -1,11 +1,11 @@
 import colors from "./colors";
 
 export const FONTS = {
-  bold: "InterBold",
-  semiBold: "InterSemiBold",
-  medium: "InterMedium",
-  regular: "InterRegular",
-  light: "InterLight",
+  bold: "Inter-Bold",
+  semiBold: "Inter-SemiBold",
+  medium: "Inter-Medium",
+  regular: "Inter-Regular",
+  light: "Inter-Light",
 };
 
 export const SHADOWS = {

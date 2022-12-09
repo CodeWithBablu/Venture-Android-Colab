@@ -7,7 +7,8 @@ import colors from '../config/colors';
 import SPACING from '../config/SPACING';
 
 import ProductCard from '../components/ProductCard';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 const Cart = () => {
 
@@ -19,8 +20,8 @@ const Cart = () => {
     }}>
       <SafeAreaView style={{
         flex: 1,
-        marginTop: StatusBar.currentHeight,
         marginBottom: SPACING * 10,
+        color: colors.dark,
       }}>
 
         <View style={{

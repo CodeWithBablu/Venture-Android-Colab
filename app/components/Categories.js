@@ -22,6 +22,7 @@ const Categories = ({ onChange }) => {
 
   return (
     <FlatList
+      showsHorizontalScrollIndicator={false}
       data={categories}
       horizontal={true}
       contentContainerStyle={{
