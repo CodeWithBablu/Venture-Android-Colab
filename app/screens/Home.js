@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import HomeScreen from './HomeScreens/HomeScreen';
 import ProductDetails from './HomeScreens/ProductDetails';
+import ArScreen from './HomeScreens/ArScreen';
 
 
 import colors from '../config/colors';
@@ -19,6 +20,7 @@ const Home = () => {
     }}>
       <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
       <HomeStack.Screen name="ProductDetails" component={ProductDetails} />
+      <HomeStack.Screen name="ArScreen" component={ArScreen} />
     </HomeStack.Navigator>
   )
 }

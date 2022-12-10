@@ -8,11 +8,16 @@ import SPACING from "../../config/SPACING";
 import colors from "../../config/colors";
 import { BlurView } from "expo-blur";
 
+var SharedPreferences = require('react-native-shared-preferences');
+
 const { height, width } = Dimensions.get("window");
 
 const sizes = ["S", "M", "L"];
 
 const ProductDetails = ({ route, navigation }) => {
+
+  SharedPreferences.setName("Product");
+  SharedPreferences.setItem("productName", product.name);
 
   const [activeSize, setActiveSize] = useState("S");
 
@@ -146,6 +151,10 @@ const ProductDetails = ({ route, navigation }) => {
                         name="cloud-circle-outline"
                         size={SPACING * 4}
                         color={colors.primary}
+                        onPress={() => navigation.navigate('ArScreen', {
+                          id: 1,
+                          product: product,
+                        })}
                       />
                     </TouchableOpacity>
                     <TouchableOpacity style={{
@@ -161,6 +170,10 @@ const ProductDetails = ({ route, navigation }) => {
                         name="logo-web-component"
                         size={SPACING * 4}
                         color={colors.primary}
+                        onPress={() => navigation.navigate('ArScreen', {
+                          id: 1,
+                          product: product,
+                        })}
                       />
                     </TouchableOpacity>
                   </View>

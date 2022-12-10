@@ -1,4 +1,5 @@
 package com.frontend;
+import in.sriraman.sharedpreferences.RNSharedPreferencesReactPackage;
 import android.content.res.Configuration;
 import expo.modules.ApplicationLifecycleDispatcher;
 import expo.modules.ReactNativeHostWrapper;
@@ -31,6 +32,8 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
+          packages.add(new ReactNativePackager());
+//          packages.add(new RNSharedPreferencesReactPackage());
           return packages;
         }
 
