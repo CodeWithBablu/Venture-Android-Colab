@@ -1,5 +1,5 @@
 import { Dimensions, ImageBackground, SafeAreaView, ScrollView, StyleSheet, StatusBar, Text, View, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -16,6 +16,10 @@ const sizes = ["S", "M", "L"];
 
 const ProductDetails = ({ route, navigation }) => {
 
+  useEffect(() => {
+    SharedPreferences.setName("Product");
+    SharedPreferences.setItem("productName", product.name);
+  }, [])
 
   const [activeSize, setActiveSize] = useState("S");
 
@@ -25,9 +29,6 @@ const ProductDetails = ({ route, navigation }) => {
   else {
     var { id, product } = route.params;
   }
-
-  SharedPreferences.setName("Product");
-  SharedPreferences.setItem("productName", product.name);
 
   return (
     <View style={{
