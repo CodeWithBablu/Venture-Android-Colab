@@ -18,6 +18,9 @@ import NavBar from './app/components/NavBar';
 
 import colors from './app/config/colors';
 
+import { useAuth0, Auth0Provider } from 'react-native-auth0';
+
+
 export default function App() {
 
 
@@ -33,12 +36,14 @@ export default function App() {
   // if (!loaded) return null;
 
   return (
-    <Provider store={store}>
-      <NavigationContainer>
-        <StatusBar backgroundColor={colors.dark} style="light" />
-        <NavBar />
-      </NavigationContainer>
-    </Provider>
+    <Auth0Provider domain={"dev-t142ickw.eu.auth0.com"} clientId={"DcPDT9v9F41ML4vJnsPcA7GqlRSxAPqx"}>
+      <Provider store={store}>
+        <NavigationContainer>
+          <StatusBar backgroundColor={colors.dark} style="light" />
+          <NavBar />
+        </NavigationContainer>
+      </Provider>
+    </Auth0Provider>
   );
 }
 

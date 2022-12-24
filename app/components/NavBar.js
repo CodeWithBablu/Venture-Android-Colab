@@ -77,7 +77,7 @@ const NavBar = () => {
             alignItems: "center"
           }}>
             {
-              User.picture ?
+              User.picture != null ?
                 <>
                   <Image
                     style={{

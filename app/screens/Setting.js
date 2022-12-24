@@ -11,17 +11,27 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../../slices/userSlices';
 
+import { useAuth0, Auth0Provider } from 'react-native-auth0';
+
+
 
 const Setting = ({ navigation }) => {
 
   const dispatch = useDispatch();
 
-  const logout = () => {
-    AsyncStorage.removeItem('user');
+  const { clearSession } = useAuth0();
 
-    const userInfo = {};
-    dispatch(setUserData(userInfo));
-  }
+  const LogOut = async () => {
+    try {
+      await AsyncStorage.removeItem('user');
+      await clearSession();
+      const userInfo = {};
+      dispatch(setUserData(userInfo));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
 
   return (
     <View style={{
@@ -142,7 +152,7 @@ const Setting = ({ navigation }) => {
             </TouchableOpacity>
 
 
-            <TouchableOpacity style={{ marginTop: SPACING * 3, alignItems: "center", }} onPress={() => logout()}>
+            <TouchableOpacity style={{ marginTop: SPACING * 3, alignItems: "center", }} onPress={() => LogOut()}>
 
               <View style={styles.viewBoxStyle}>
 

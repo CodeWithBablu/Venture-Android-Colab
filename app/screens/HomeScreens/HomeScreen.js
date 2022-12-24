@@ -26,7 +26,7 @@ import { selectUserData, setUserData } from "../../../slices/userSlices";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FONTS } from "../../config";
 
-
+import { useAuth0, Auth0Provider } from 'react-native-auth0';
 
 const { width } = Dimensions.get("window");
 
@@ -34,11 +34,12 @@ const { width } = Dimensions.get("window");
 
 const HomeScreen = ({ navigation }) => {
 
-  // const dispatch = useDispatch(); // Redux
+  const { user, authorize } = useAuth0();
 
-  // const User = useSelector(selectUserData);
+  const dispatch = useDispatch(); // Redux
 
-  // console.log(`User is: ${User}`);
+  const User = useSelector(selectUserData);
+
 
   const [activeCategoryId, setActiveCategoryId] = useState(0);
 
@@ -50,12 +51,11 @@ const HomeScreen = ({ navigation }) => {
   //   androidClientId: "548656183832-ilji6agt3q2q8rmr9h0gav19660ononp.apps.googleusercontent.com"
   // });
 
-  // useEffect(() => {
-  //   setUserInfo();
-  // }, [response, accessToken]);
+  useEffect(() => {
+    setUserInfo();
+  }, [user]);
 
   // const setUserInfo = async () => {
-
 
   //   try {
   //     const userDataJson = await AsyncStorage.getItem('user');
@@ -103,11 +103,42 @@ const HomeScreen = ({ navigation }) => {
 
   // }
 
-  const User = {
-    name: undefined,
-    picture: undefined,
+  const setUserInfo = async () => {
+
+    try {
+      const userDataJson = await AsyncStorage.getItem('user');
+
+      if (userDataJson != null) {
+        // console.log("Hi");
+        const userData = await JSON.parse(userDataJson);
+        dispatch(setUserData(userData));
+      }
+      else if (user != null) {
+        // console.log("how");
+        dispatch(setUserData(user));
+        await AsyncStorage.setItem('user', JSON.stringify(user));
+      }
+      else {
+        // console.log("you");
+        dispatch(setUserData({}));
+        await AsyncStorage.removeItem('user');
+      }
+    } catch (e) {
+      // error reading value
+      console.log(e);
+    }
   }
 
+  console.log(`User is: ${User}`);
+  console.log(User);
+
+  const LogIn = async () => {
+    try {
+      await authorize();
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <View style={{
@@ -159,7 +190,7 @@ const HomeScreen = ({ navigation }) => {
                 color: colors.white,
                 fontSize: SPACING * 1.4,
                 fontFamily: FONTS.semiBold,
-              }}>{User.name == undefined ?
+              }}>{User.name == null ?
 
                 "" : `Hello, `}</Text>
 
@@ -168,7 +199,7 @@ const HomeScreen = ({ navigation }) => {
                 marginRight: SPACING,
                 fontSize: SPACING * 1.4,
                 fontFamily: FONTS.semiBold,
-              }}>{User.name == undefined ?
+              }}>{User.name == null ?
 
                 "Hey! Good to see you there 🤩️ " : `${User.name}`}</Text>
 
@@ -191,25 +222,23 @@ const HomeScreen = ({ navigation }) => {
                   intensity={30}
                 >
                   {
-                    User.picture &&
-                    <>
-                      <Image
-                        style={{ width: "100%", height: "100%", borderRadius: SPACING * 3 }}
-                        source={{ uri: `${User.picture}` }}
-                        resizeMode="contain"
-                      />
-                    </>
-                  }
-                  {
-                    User.picture == null &&
-                    <>
-                      <Ionicons
-                        name="person"
-                        size={SPACING * 3.5}
-                        color={colors.dark}
-                      // onPress={() => { promptAsync() }}
-                      />
-                    </>
+                    User.picture ?
+                      <>
+                        <Image
+                          style={{ width: "100%", height: "100%", borderRadius: SPACING * 3 }}
+                          source={{ uri: `${User.picture}` }}
+                          resizeMode="contain"
+                        />
+                      </>
+                      :
+                      <>
+                        <Ionicons
+                          name="person"
+                          size={SPACING * 3.5}
+                          color={colors.dark}
+                          onPress={() => { LogIn() }}
+                        />
+                      </>
                   }
                 </BlurView>
               </TouchableOpacity>

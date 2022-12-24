@@ -1,5 +1,7 @@
 package com.frontend;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.View;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 public class NativeUI extends AppCompatActivity {
 
     public Button btn1,btn2,btn3,btn4,btn5;
+
+    SharedPreferences sh = getSharedPreferences("Product", Context.MODE_PRIVATE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

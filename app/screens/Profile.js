@@ -13,11 +13,7 @@ const avatar = require('../../assets/avatar.jpg');
 
 const Profile = () => {
 
-  // const User = useSelector(selectUserData);
-  const User = {
-    name: undefined,
-    picture: undefined,
-  }
+  const User = useSelector(selectUserData);
 
   return (
     <View style={{

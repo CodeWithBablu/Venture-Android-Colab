@@ -16,8 +16,6 @@ const sizes = ["S", "M", "L"];
 
 const ProductDetails = ({ route, navigation }) => {
 
-  SharedPreferences.setName("Product");
-  SharedPreferences.setItem("productName", product.name);
 
   const [activeSize, setActiveSize] = useState("S");
 
@@ -27,6 +25,9 @@ const ProductDetails = ({ route, navigation }) => {
   else {
     var { id, product } = route.params;
   }
+
+  SharedPreferences.setName("Product");
+  SharedPreferences.setItem("productName", product.name);
 
   return (
     <View style={{
