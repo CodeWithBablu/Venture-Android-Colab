@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { FONTS } from '../config';
 
@@ -9,11 +9,91 @@ import SPACING from '../config/SPACING';
 import ProductCard from '../components/ProductCard';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useStateValue } from '../../context/Stateprovider';
+import { useStripe } from '@stripe/stripe-react-native';
 
+
+const API_URL = `http://localhost:5000`;
 
 const Cart = () => {
 
   const { cartItems, totalPrice, setTotalQty, setTotalPrice, setCartItems, onRemove, onAdd } = useStateValue();
+
+
+
+  const { initPaymentSheet, presentPaymentSheet } = useStripe();
+  const [loading, setLoading] = useState(false);
+
+  const fetchPaymentSheetParams = async () => {
+
+    // const data = {
+    //   totalAmount: 200,
+    // }
+
+    // const response = await fetch('http://localhost:5000/payment-sheet', {
+    //   method: 'POST',
+    //   headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    //   body: JSON.stringify(data),
+    // });
+
+    // console.log("Popos");
+    // const { paymentIntent, publishableKey } = await response.json();
+
+    // return {
+    //   paymentIntent,
+    //   publishableKey,
+    // };
+  };
+
+  const initializePaymentSheet = async () => {
+    // const {
+    //   paymentIntent,
+    //   publishableKey,
+    // } = await fetchPaymentSheetParams();
+
+    console.log("hi");
+
+    const response = await fetch('http://localhost:5000/user', {
+      method: 'POST',
+      mode: 'no-cors',
+    }
+    )
+
+    const data = await response.json();
+
+    console.log(data);
+
+    // const { error } = await initPaymentSheet({
+    //   merchantDisplayName: "Veture Pvt.Ltd",
+    //   paymentIntentClientSecret: paymentIntent,
+    //   // Set `allowsDelayedPaymentMethods` to true if your business can handle payment
+    //   //methods that complete payment after a delay, like SEPA Debit and Sofort.
+    //   // allowsDelayedPaymentMethods: true,
+    //   defaultBillingDetails: {
+    //     name: 'Babasaheb',
+    //   }
+    // });
+    // if (!error) {
+    //   setLoading(true);
+    // }
+
+  };
+
+  const openPaymentSheet = async () => {
+    const { error } = await presentPaymentSheet();
+
+    if (error) {
+      Alert.alert(`Error code: ${error.code}`, error.message);
+    } else {
+      Alert.alert('Success', 'Your order is confirmed!');
+    }
+  };
+
+  useEffect(() => {
+    initializePaymentSheet();
+  }, []);
+
+
+
 
   function clearCart() {
     setCartItems([]);
@@ -129,8 +209,10 @@ const Cart = () => {
             justifyContent: "space-evenly",
             alignItems: "center",
             backgroundColor: colors.primary,
-          }}>
-            <Ionicons style={{ color: colors.dark }} name='pricetags' size={SPACING * 3.5} />
+          }}
+            onPress={() => openPaymentSheet()}
+          >
+            <Ionicons style={{ color: colors.dark }} name='pricetags' size={SPACING * 3} />
 
             <Text style={{
               fontFamily: FONTS.bold,
