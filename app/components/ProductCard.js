@@ -5,9 +5,14 @@ import colors from '../config/colors'
 import SPACING from '../config/SPACING'
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useStateValue } from '../../context/Stateprovider'
 
 
 const ProductCard = ({ item }) => {
+
+  const { cartItems, totalPrice, setTotalQty, setTotalPrice, setCartItems, onRemove, onAdd } = useStateValue();
+
+
   return (
     <View style={{
       flex: 1,
@@ -58,9 +63,9 @@ const ProductCard = ({ item }) => {
             justifyContent: "space-between",
             alignItems: "center",
           }}>
-            <TouchableOpacity><Ionicons style={{ color: colors.dark }} name='remove' size={SPACING * 4} /></TouchableOpacity>
-            <Text style={{ width: SPACING * 4, height: SPACING * 4, backgroundColor: colors.dark, textAlign: "center", textAlignVertical: "center", color: colors.white, borderRadius: SPACING, fontFamily: FONTS.medium, fontSize: SPACING * 1.5, }}>1</Text>
-            <TouchableOpacity><Ionicons style={{ color: colors.cart.button }} name='add-sharp' size={SPACING * 4} /></TouchableOpacity>
+            <TouchableOpacity><Ionicons style={{ color: colors.dark }} name='remove' size={SPACING * 4} onPress={() => onRemove(item, -1)} /></TouchableOpacity>
+            <Text style={{ width: SPACING * 4, height: SPACING * 4, backgroundColor: colors.dark, textAlign: "center", textAlignVertical: "center", color: colors.white, borderRadius: SPACING, fontFamily: FONTS.medium, fontSize: SPACING * 1.5, }}>{item.quantity}</Text>
+            <TouchableOpacity><Ionicons style={{ color: colors.cart.button }} name='add-sharp' size={SPACING * 4} onPress={() => onAdd(item, 1)} /></TouchableOpacity>
           </View>
         </View>
 

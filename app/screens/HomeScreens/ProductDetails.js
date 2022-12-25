@@ -7,6 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import SPACING from "../../config/SPACING";
 import colors from "../../config/colors";
 import { BlurView } from "expo-blur";
+import { useStateValue } from "../../../context/Stateprovider";
 
 var SharedPreferences = require('react-native-shared-preferences');
 
@@ -15,6 +16,9 @@ const { height, width } = Dimensions.get("window");
 const sizes = ["S", "M", "L"];
 
 const ProductDetails = ({ route, navigation }) => {
+
+  const { cartItems, totalPrice, setTotalQty, setTotalPrice, setCartItems, onRemove, onAdd } = useStateValue();
+
 
   useEffect(() => {
     SharedPreferences.setName("Product");
@@ -286,6 +290,7 @@ const ProductDetails = ({ route, navigation }) => {
         flexDirection: "row",
         paddingTop: SPACING,
         justifyContent: "space-between",
+        alignItems: "center",
         marginBottom: SPACING * 12,
       }}>
 
@@ -320,11 +325,13 @@ const ProductDetails = ({ route, navigation }) => {
             marginRight: SPACING,
             backgroundColor: colors.primary,
             width: width / 2 + SPACING * 2,
-            height: SPACING * 7,
+            height: SPACING * 6,
             justifyContent: "center",
             alignItems: "center",
             borderRadius: SPACING * 2,
           }}
+
+          onPress={() => onAdd(product, 1)}
         >
           <Text
             style={{
@@ -333,7 +340,7 @@ const ProductDetails = ({ route, navigation }) => {
               fontWeight: "700",
             }}
           >
-            Buy Now
+            Add to Cart
           </Text>
         </TouchableOpacity>
 

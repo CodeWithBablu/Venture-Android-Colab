@@ -8,11 +8,38 @@ import SPACING from '../config/SPACING';
 
 import ProductCard from '../components/ProductCard';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useStateValue } from '../../context/Stateprovider';
 
 
 const Cart = () => {
 
-  const [items, setItems] = useState(cartProduct);
+  const { cartItems, totalPrice, setTotalQty, setTotalPrice, setCartItems, onRemove, onAdd } = useStateValue();
+
+  function clearCart() {
+    setCartItems([]);
+    setTotalQty(0);
+    setTotalPrice(0);
+  }
+
+  //Payment
+  // const handleCheckout = async () => {
+  //   const stripe = await getStripi();
+
+  //   const stripeData = {
+  //     user: userInfo,
+  //     cartItems: cartItems,
+  //   }
+
+  //   const response = await fetch(`${URL}/stripe`, {
+  //     method: "POST",
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify(stripeData),
+  //   }
+  //   );
+  //   const data = await response.json();
+  //   await stripe.redirectToCheckout({ sessionId: data.id });
+  // }
+
   return (
     <View style={{
       flex: 1,
@@ -40,13 +67,34 @@ const Cart = () => {
             fontFamily: FONTS.semiBold,
             fontSize: SPACING * 1.5,
             color: colors['white-smoke']
-          }}>4 Items
+          }}>{cartItems.length} Items
           </Text>
+
+          <TouchableOpacity style={{
+            flexDirection: "row",
+            width: SPACING * 10,
+            height: SPACING * 4.5,
+            padding: SPACING / 2,
+            borderRadius: SPACING * 1.5,
+            backgroundColor: colors.light,
+            justifyContent: "space-around",
+            alignItems: "center",
+          }}
+            onPress={() => clearCart()}
+          >
+            <Ionicons style={{ color: colors.dark }} name='close-circle' size={SPACING * 3.5} />
+            <Text style={{
+              color: colors.white,
+              fontFamily: FONTS.bold,
+            }}>Clear</Text>
+
+          </TouchableOpacity>
+
         </View>
 
         <ScrollView style={{ height: SPACING * 5, }}>
           {
-            items && items.map((item) => (
+            cartItems && cartItems.map((item) => (
               <ProductCard key={item.id} item={item} />
             ))
           }
@@ -59,30 +107,30 @@ const Cart = () => {
 
           <View style={styles.viewBoxStyle}>
             <Text style={styles.textStyle}>Sub Total</Text>
-            <Text style={styles.textStyle}>Rs. 500</Text>
+            <Text style={styles.textStyle}>Rs. {totalPrice}</Text>
           </View>
 
           <View style={styles.viewBoxStyle}>
             <Text style={styles.textStyle}>Shipping Tax</Text>
-            <Text style={styles.textStyle}>Rs. 500</Text>
+            <Text style={styles.textStyle}>Rs. 20</Text>
           </View>
 
           <View style={styles.viewBoxBigStyle}>
             <Text style={styles.textBigStyle}>Total</Text>
-            <Text style={styles.textBigStyle}>Rs. 520</Text>
+            <Text style={styles.textBigStyle}>Rs. {totalPrice + 20}</Text>
           </View>
 
           <TouchableOpacity style={{
             flexDirection: "row",
             width: "80%",
             borderRadius: SPACING * 2,
-            height: SPACING * 7,
+            height: SPACING * 6,
             marginTop: SPACING * 2,
             justifyContent: "space-evenly",
             alignItems: "center",
             backgroundColor: colors.primary,
           }}>
-            <Ionicons style={{ color: colors.dark }} name='pricetags' size={SPACING * 4} />
+            <Ionicons style={{ color: colors.dark }} name='pricetags' size={SPACING * 3.5} />
 
             <Text style={{
               fontFamily: FONTS.bold,
@@ -106,7 +154,7 @@ const styles = StyleSheet.create({
   textStyle: {
     fontFamily: FONTS.regular,
     fontSize: SPACING * 1.5,
-    color: colors.secondary,
+    color: colors.light,
   },
   viewBoxStyle: {
     flexDirection: "row",
@@ -118,7 +166,7 @@ const styles = StyleSheet.create({
     marginTop: SPACING * 2,
     fontFamily: FONTS.bold,
     fontSize: SPACING * 2,
-    color: colors.rose,
+    color: colors.lightBlue,
   },
   viewBoxBigStyle: {
     borderWidth: 2.5,

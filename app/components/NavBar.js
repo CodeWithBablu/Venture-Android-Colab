@@ -1,9 +1,9 @@
 
 import React from 'react'
-import { View, Dimensions, Image } from "react-native";
+import { View, Dimensions, Image, Text } from "react-native";
 import SPACING from '../config/SPACING';
 import colors from '../config/colors';
-import { SHADOWS } from '../config';
+import { FONTS, SHADOWS } from '../config';
 
 
 const { width } = Dimensions.get("window");
@@ -23,10 +23,13 @@ import TagIcon from '../../assets/Navbar/TagIcon';
 import ShoppingIcon from '../../assets/Navbar/ShoppingIcon';
 import { useSelector } from 'react-redux';
 import { selectUserData } from '../../slices/userSlices';
+import { useStateValue } from '../../context/Stateprovider';
 
 const Tab = createBottomTabNavigator();
 
 const NavBar = () => {
+
+  const { cartItems, totalQty, totalPrice, setTotalQty, setTotalPrice, setCartItems, onRemove, onAdd } = useStateValue();
 
   const User = useSelector(selectUserData);
 
@@ -137,9 +140,28 @@ const NavBar = () => {
             borderRadius: SPACING * 2,
             backgroundColor: focused ? colors.lightBlue : colors.dark,
             justifyContent: "center",
-            alignItems: "center"
+            alignItems: "center",
+            position: "relative",
           }}>
+
             <ShoppingIcon color={focused ? colors.dark : colors.icon} />
+
+            <View style={{
+              position: "absolute",
+              top: 5,
+              right: 5,
+              width: SPACING * 2.2,
+              height: SPACING * 2.2,
+              borderRadius: SPACING * 2,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: colors.rose,
+            }}>
+              <Text style={{
+                color: colors.dark,
+                fontFamily: FONTS.bold,
+              }}>{totalQty}</Text>
+            </View>
           </View>
         )
       }} />

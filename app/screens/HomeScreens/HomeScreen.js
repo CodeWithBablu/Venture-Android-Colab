@@ -27,12 +27,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FONTS } from "../../config";
 
 import { useAuth0, Auth0Provider } from 'react-native-auth0';
+import { useStateValue } from "../../../context/Stateprovider";
 
 const { width } = Dimensions.get("window");
 
 // WebBrowser.maybeCompleteAuthSession();
 
 const HomeScreen = ({ navigation }) => {
+
+  const { cartItems, totalPrice, setTotalQty, setTotalPrice, setCartItems, onRemove, onAdd } = useStateValue();
+
 
   const { user, authorize } = useAuth0();
 
@@ -378,10 +382,12 @@ const HomeScreen = ({ navigation }) => {
                         backgroundColor: colors.primary,
                         padding: SPACING / 2,
                         borderRadius: SPACING,
-                      }}>
+                      }}
+                        onPress={() => onAdd(product, 1)}
+                      >
                         <Ionicons
                           name="add"
-                          size={SPACING * 2}
+                          size={SPACING * 2.5}
                           color={colors.white}
                         />
                       </TouchableOpacity>
