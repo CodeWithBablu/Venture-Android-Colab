@@ -11,15 +11,56 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useStateValue } from '../../context/Stateprovider';
 import { useStripe } from '@stripe/stripe-react-native';
 
+import Toast from 'react-native-toast-message';
+import { useSelector } from 'react-redux';
+import { selectUserData } from '../../slices/userSlices';
+
 
 const API_URL = `http://192.168.0.105:5000`;
 
 const Cart = () => {
 
+
+  var User = useSelector(selectUserData);
+
   const { cartItems, totalPrice, setTotalQty, setTotalPrice, setCartItems, onRemove, onAdd } = useStateValue();
 
+  const showError = () => {
+
+    Toast.show({
+      type: 'error',
+      text1: 'User-Info not filled',
+      text2: 'Not LoggedIn or Incomplete user-info 😍️'
+    });
+
+  }
+
+  function clearCart() {
+    setCartItems([]);
+    setTotalQty(0);
+    setTotalPrice(0);
+  }
+
+  const addOrderToDatabase = async () => {
+
+    const data = {
+      name: User.name,
+      phone: User.phone,
+      email: User.email,
+      address: User.address,
+      items: cartItems
+    }
+
+    const res = await fetch(`${API_URL}/add-order`, {
+      method: 'POST',
+      headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+
+  }
 
 
+  //// ==============  Stripe part start===================
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
   const [loading, setLoading] = useState(false);
 
@@ -75,27 +116,30 @@ const Cart = () => {
   };
 
   const openPaymentSheet = async () => {
-    const { error } = await presentPaymentSheet();
 
-    if (error) {
-      console.log(`Error code: ${error.code} : ${error.message}`);
-    } else {
-      console.log('Success Your order is confirmed!');
+    if (User.address && User.phone) {
+      const { error } = await presentPaymentSheet();
+
+      if (error) {
+        console.log(`Error code: ${error.code} : ${error.message}`);
+      } else {
+        console.log('Success Your order is confirmed!');
+        clearCart();
+        addOrderToDatabase();
+      }
     }
+    else
+      showError();
+
   };
 
   useEffect(() => {
     initializePaymentSheet();
   }, [totalPrice]);
 
+  //// ==============  Stripe part End  ===================
 
 
-
-  function clearCart() {
-    setCartItems([]);
-    setTotalQty(0);
-    setTotalPrice(0);
-  }
 
   //Payment
   // const handleCheckout = async () => {
@@ -205,6 +249,7 @@ const Cart = () => {
             justifyContent: "space-evenly",
             alignItems: "center",
             backgroundColor: colors.primary,
+            opacity: User.address && User.phone ? 1 : 0.2,
           }}
             onPress={() => openPaymentSheet()}
           >

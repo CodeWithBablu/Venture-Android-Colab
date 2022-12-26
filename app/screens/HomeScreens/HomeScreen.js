@@ -133,8 +133,7 @@ const HomeScreen = ({ navigation }) => {
     }
   }
 
-  console.log(`User is: ${User}`);
-  console.log(User);
+
 
   const LogIn = async () => {
     try {

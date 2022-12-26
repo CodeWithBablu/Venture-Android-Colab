@@ -1,19 +1,70 @@
 import { BlurView } from 'expo-blur';
-import React from 'react'
+import React, { useState } from 'react'
 import { SafeAreaView, StyleSheet, Text, View, StatusBar, ScrollView, TouchableOpacity, Image, Dimensions, TextInput } from "react-native";
 import colors from '../config/colors';
 import SPACING from '../config/SPACING';
 import { FONTS, SHADOWS } from '../config/index';
 
 import { Ionicons } from '@expo/vector-icons';
-import { selectUserData } from '../../slices/userSlices';
-import { useSelector } from 'react-redux';
+import { selectUserData, setUserData } from '../../slices/userSlices';
+import { useDispatch, useSelector } from 'react-redux';
 
 const avatar = require('../../assets/avatar.jpg');
 
+import Toast from 'react-native-toast-message';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
+
 const Profile = () => {
 
-  const User = useSelector(selectUserData);
+  const dispatch = useDispatch(); // Redux
+
+  var User = useSelector(selectUserData);
+
+
+  const [address, setAddress] = useState(null);
+  const [phone, setPhone] = useState(null)
+
+  const save_Address = async () => {
+
+    User = { ...User, address: address };
+
+    await AsyncStorage.setItem('user', JSON.stringify(User));
+    dispatch(setUserData(User));
+
+    Toast.show({
+      type: 'success',
+      text1: 'Address',
+      text2: 'Address successfully added 😍️'
+    });
+
+
+  }
+
+  const save_Phone = async () => {
+
+    User = { ...User, phone: phone };
+    await AsyncStorage.setItem('user', JSON.stringify(User));
+    dispatch(setUserData(User));
+
+    Toast.show({
+      type: 'success',
+      text1: 'Contact No',
+      text2: 'Contact Details successfully added 😍️'
+    });
+  }
+
+  const showError = () => {
+    Toast.show({
+      type: 'error',
+      text1: 'Not Logged in',
+      text2: 'Please Login to add Details 👋'
+    });
+  }
+
+
 
   return (
     <View style={{
@@ -115,16 +166,17 @@ const Profile = () => {
 
               <TextInput
                 style={styles.textinputStyle}
-                onChangeTex={null}
                 value={null}
+                onChange={(e) => setAddress(e.nativeEvent.text)}
                 placeholder="where did you live..."
                 placeholderTextColor={colors.profile.text}
                 keyboardType="default"
               />
 
-              <View style={styles.saveBtnStyle}>
+              <TouchableOpacity style={styles.saveBtnStyle}
+                onPress={User.email ? () => save_Address() : () => showError()}>
                 <Ionicons name='checkmark-done' size={SPACING * 5} />
-              </View>
+              </TouchableOpacity>
 
             </TouchableOpacity>
 
@@ -134,16 +186,19 @@ const Profile = () => {
 
               <TextInput
                 style={styles.textinputStyle}
-                onChangeTex={null}
                 value={null}
+                onChange={(e) => setPhone(e.nativeEvent.text)}
                 placeholder="Phone no..."
                 placeholderTextColor={colors.profile.text}
+                textContentType="telephoneNumber"
+                maxLength={10}
                 keyboardType="number-pad"
               />
 
-              <View style={styles.saveBtnStyle}>
+              <TouchableOpacity style={styles.saveBtnStyle}
+                onPress={User.email ? () => save_Phone() : () => showError()}>
                 <Ionicons name='checkmark-done' size={SPACING * 5} />
-              </View>
+              </TouchableOpacity>
 
             </TouchableOpacity>
 

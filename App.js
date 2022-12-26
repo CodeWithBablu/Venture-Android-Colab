@@ -21,6 +21,8 @@ import colors from './app/config/colors';
 import { useAuth0, Auth0Provider } from 'react-native-auth0';
 import { StateProvider } from './context/Stateprovider';
 
+import Toast, { BaseToast, ErrorToast } from 'react-native-toast-message';
+
 export default function App() {
 
 
@@ -35,6 +37,41 @@ export default function App() {
 
   // if (!loaded) return null;
 
+
+  const toastConfig = {
+
+    success: (props) => (
+      <BaseToast
+        {...props}
+        style={{ borderLeftColor: "lightgreen", borderLeftWidth: 20 }}
+        contentContainerStyle={{ paddingHorizontal: 15 }}
+        text1Style={{
+          fontSize: 15,
+          fontWeight: '900'
+        }}
+        text2Style={{
+          fontSize: 12
+        }}
+      />
+    ),
+
+    error: (props) => (
+      <ErrorToast
+        {...props}
+        style={{ borderLeftColor: "red", borderLeftWidth: 20 }}
+        contentContainerStyle={{ paddingHorizontal: 15 }}
+        text1Style={{
+          fontSize: 15,
+          fontWeight: '900'
+        }}
+        text2Style={{
+          fontSize: 12
+        }}
+      />
+    ),
+  };
+
+
   return (
     <Auth0Provider domain={"dev-t142ickw.eu.auth0.com"} clientId={"DcPDT9v9F41ML4vJnsPcA7GqlRSxAPqx"}>
       <Provider store={store}>
@@ -42,6 +79,7 @@ export default function App() {
           <NavigationContainer>
             <StatusBar backgroundColor={colors.dark} style="light" />
             <NavBar />
+            <Toast config={toastConfig} />
           </NavigationContainer>
         </StateProvider>
       </Provider>

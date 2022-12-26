@@ -145,23 +145,25 @@ const NavBar = () => {
           }}>
 
             <ShoppingIcon color={focused ? colors.dark : colors.icon} />
+            {
+              totalQty > 0 && (<View style={{
+                position: "absolute",
+                top: 5,
+                right: 5,
+                width: SPACING * 2.2,
+                height: SPACING * 2.2,
+                borderRadius: SPACING * 2,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: colors.rose,
+              }}>
+                <Text style={{
+                  color: colors.dark,
+                  fontFamily: FONTS.bold,
+                }}>{totalQty}</Text>
+              </View>)
+            }
 
-            <View style={{
-              position: "absolute",
-              top: 5,
-              right: 5,
-              width: SPACING * 2.2,
-              height: SPACING * 2.2,
-              borderRadius: SPACING * 2,
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: colors.rose,
-            }}>
-              <Text style={{
-                color: colors.dark,
-                fontFamily: FONTS.bold,
-              }}>{totalQty}</Text>
-            </View>
           </View>
         )
       }} />
