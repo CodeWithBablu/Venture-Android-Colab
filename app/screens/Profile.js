@@ -24,8 +24,8 @@ const Profile = () => {
   var User = useSelector(selectUserData);
 
 
-  const [address, setAddress] = useState(null);
-  const [phone, setPhone] = useState(null)
+  const [address, setAddress] = useState(User.address);
+  const [phone, setPhone] = useState(User.phone)
 
   const save_Address = async () => {
 
@@ -48,6 +48,8 @@ const Profile = () => {
     User = { ...User, phone: phone };
     await AsyncStorage.setItem('user', JSON.stringify(User));
     dispatch(setUserData(User));
+
+    console.log(User);
 
     Toast.show({
       type: 'success',
@@ -166,7 +168,8 @@ const Profile = () => {
 
               <TextInput
                 style={styles.textinputStyle}
-                value={null}
+                defaultValue={User.address && User.address != '' ? User.address : null}
+                value={address}
                 onChange={(e) => setAddress(e.nativeEvent.text)}
                 placeholder="where did you live..."
                 placeholderTextColor={colors.profile.text}
@@ -186,7 +189,8 @@ const Profile = () => {
 
               <TextInput
                 style={styles.textinputStyle}
-                value={null}
+                defaultValue={User.phone && User.phone != '' ? User.phone : null}
+                value={phone}
                 onChange={(e) => setPhone(e.nativeEvent.text)}
                 placeholder="Phone no..."
                 placeholderTextColor={colors.profile.text}

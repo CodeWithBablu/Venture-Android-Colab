@@ -113,17 +113,18 @@ const HomeScreen = ({ navigation }) => {
       const userDataJson = await AsyncStorage.getItem('user');
 
       if (userDataJson != null) {
-        // console.log("Hi");
+        console.log("Hi");
         const userData = await JSON.parse(userDataJson);
+        console.log(userData);
         dispatch(setUserData(userData));
       }
       else if (user != null) {
-        // console.log("how");
+        console.log("how");
         dispatch(setUserData(user));
         await AsyncStorage.setItem('user', JSON.stringify(user));
       }
       else {
-        // console.log("you");
+        console.log("you");
         dispatch(setUserData({}));
         await AsyncStorage.removeItem('user');
       }

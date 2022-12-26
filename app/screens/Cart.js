@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { FONTS } from '../config';
+import { Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FONTS, SHADOWS } from '../config';
 
 import cartProduct from "../config/cartProducts";
 import colors from '../config/colors';
 import SPACING from '../config/SPACING';
 
 import ProductCard from '../components/ProductCard';
+import OrderCard from '../components/OrderCard';
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useStateValue } from '../../context/Stateprovider';
 import { useStripe } from '@stripe/stripe-react-native';
@@ -15,10 +17,13 @@ import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
 import { selectUserData } from '../../slices/userSlices';
 
+import emptyCart from '../../assets/orderNow.gif'
+
+import delivery from '../../assets/delivery.gif'
 
 const API_URL = `http://192.168.0.105:5000`;
 
-const Cart = () => {
+const Cart = ({ navigation }) => {
 
 
   var User = useSelector(selectUserData);
@@ -62,7 +67,13 @@ const Cart = () => {
 
   //// ==============  Stripe part start===================
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
+
   const [loading, setLoading] = useState(false);
+
+  // const [cartScreen, setCartScreen] = useState(cartItems.length > 0 ? "cart" : "emptycart");
+  const [cartScreen, setCartScreen] = useState("success");
+
+
 
   const fetchPaymentSheetParams = async () => {
 
@@ -124,6 +135,7 @@ const Cart = () => {
         console.log(`Error code: ${error.code} : ${error.message}`);
       } else {
         console.log('Success Your order is confirmed!');
+        setCartScreen("success");
         clearCart();
         addOrderToDatabase();
       }
@@ -132,6 +144,10 @@ const Cart = () => {
       showError();
 
   };
+
+  useEffect(() => {
+    setCartScreen(cartItems.length > 0 ? "cart" : "emptycart");
+  }, [cartItems]);
 
   useEffect(() => {
     initializePaymentSheet();
@@ -171,99 +187,227 @@ const Cart = () => {
         color: colors.dark,
       }}>
 
-        <View style={{
-          flexDirection: "row",
-          padding: SPACING * 2,
-          alignItems: "center",
-          justifyContent: "space-between"
-        }}>
-          <Text style={{
-            fontFamily: FONTS.semiBold,
-            fontSize: SPACING * 2.2,
-            color: colors.white
-          }}>My Cart</Text>
+        {
+          cartScreen == "emptycart" &&
+          (
+            <>
+              <View style={{
+                flex: 1,
+                alignItems: "center",
+                marginTop: SPACING,
+                padding: SPACING / 2,
+              }}>
+                <Text style={{
+                  fontFamily: FONTS.bold,
+                  fontSize: SPACING * 2.5,
+                  color: colors['dark-light']
+                }}>Uff!! you Cart seems Empty</Text>
 
-          <Text style={{
-            fontFamily: FONTS.semiBold,
-            fontSize: SPACING * 1.5,
-            color: colors['white-smoke']
-          }}>{cartItems.length} Items
-          </Text>
+                <Image
+                  source={emptyCart}
+                  style={{
+                    width: SPACING * 25,
+                    height: SPACING * 25,
+                    marginTop: SPACING * 2,
+                    ...SHADOWS.dark,
+                  }}
+                />
 
-          <TouchableOpacity style={{
-            flexDirection: "row",
-            width: SPACING * 10,
-            height: SPACING * 4.5,
-            padding: SPACING / 2,
-            borderRadius: SPACING * 1.5,
-            backgroundColor: colors.light,
-            justifyContent: "space-around",
-            alignItems: "center",
-          }}
-            onPress={() => clearCart()}
-          >
-            <Ionicons style={{ color: colors.dark }} name='close-circle' size={SPACING * 3.5} />
-            <Text style={{
-              color: colors.white,
-              fontFamily: FONTS.bold,
-            }}>Clear</Text>
+                <Text style={{
+                  fontFamily: FONTS.bold,
+                  fontSize: SPACING * 4,
+                  marginTop: SPACING * 4,
+                }}>Let's add something For You 😋️</Text>
 
-          </TouchableOpacity>
+                <TouchableOpacity style={{
+                  flexDirection: "row",
+                  justifyContent: "space-around",
+                  alignItems: "center",
+                  borderRadius: SPACING,
+                  padding: SPACING,
+                  width: SPACING * 25,
+                  marginTop: SPACING * 6,
+                  backgroundColor: colors.lightBlue,
+                }}
+                  onPress={() => navigation.navigate('Home')}
+                >
+                  <Ionicons name='arrow-back-circle' color={colors.dark} size={SPACING * 4} />
+                  <Text style={{
+                    fontFamily: FONTS.bold,
+                    fontSize: SPACING * 2.5,
+                    color: colors.dark
+                  }}>Shop Now</Text>
+                </TouchableOpacity>
 
-        </View>
+              </View>
+            </>
+          )
+        }
 
-        <ScrollView style={{ height: SPACING * 5, }}>
-          {
-            cartItems && cartItems.map((item) => (
-              <ProductCard key={item.id} item={item} />
-            ))
-          }
-        </ScrollView>
+        {
+          cartScreen == "cart" &&
 
-        <View style={{
-          alignItems: "center",
-          padding: SPACING * 2,
-        }}>
+          (
+            <>
+              <View style={{
+                flexDirection: "row",
+                padding: SPACING * 2,
+                alignItems: "center",
+                justifyContent: "space-between"
+              }}>
+                <Text style={{
+                  fontFamily: FONTS.semiBold,
+                  fontSize: SPACING * 2.2,
+                  color: colors.white
+                }}>My Cart</Text>
 
-          <View style={styles.viewBoxStyle}>
-            <Text style={styles.textStyle}>Sub Total</Text>
-            <Text style={styles.textStyle}>Rs. {totalPrice}</Text>
-          </View>
+                <Text style={{
+                  fontFamily: FONTS.semiBold,
+                  fontSize: SPACING * 1.5,
+                  color: colors['white-smoke']
+                }}>{cartItems.length} Items
+                </Text>
 
-          <View style={styles.viewBoxStyle}>
-            <Text style={styles.textStyle}>Shipping Tax</Text>
-            <Text style={styles.textStyle}>Rs. 20</Text>
-          </View>
+                <TouchableOpacity style={{
+                  flexDirection: "row",
+                  width: SPACING * 10,
+                  height: SPACING * 4.5,
+                  padding: SPACING / 2,
+                  borderRadius: SPACING * 1.5,
+                  backgroundColor: colors.light,
+                  justifyContent: "space-around",
+                  alignItems: "center",
+                }}
+                  onPress={() => clearCart()}
+                >
+                  <Ionicons style={{ color: colors.dark }} name='close-circle' size={SPACING * 3.5} />
+                  <Text style={{
+                    color: colors.white,
+                    fontFamily: FONTS.bold,
+                  }}>Clear</Text>
 
-          <View style={styles.viewBoxBigStyle}>
-            <Text style={styles.textBigStyle}>Total</Text>
-            <Text style={styles.textBigStyle}>Rs. {totalPrice + 20}</Text>
-          </View>
+                </TouchableOpacity>
 
-          <TouchableOpacity style={{
-            flexDirection: "row",
-            width: "80%",
-            borderRadius: SPACING * 2,
-            height: SPACING * 6,
-            marginTop: SPACING * 2,
-            justifyContent: "space-evenly",
-            alignItems: "center",
-            backgroundColor: colors.primary,
-            opacity: User.address && User.phone ? 1 : 0.2,
-          }}
-            onPress={() => openPaymentSheet()}
-          >
-            <Ionicons style={{ color: colors.dark }} name='pricetags' size={SPACING * 3} />
+              </View>
 
-            <Text style={{
-              fontFamily: FONTS.bold,
-              color: colors.white,
-              fontSize: SPACING * 2.5,
-            }}>Checkout</Text>
-          </TouchableOpacity>
+              <ScrollView style={{ height: SPACING * 5, }}>
+                {
+                  cartItems && cartItems.map((item) => (
+                    <ProductCard key={item.id} item={item} />
+                  ))
+                }
+              </ScrollView>
+
+              <View style={{
+                alignItems: "center",
+                padding: SPACING * 2,
+              }}>
+
+                <View style={styles.viewBoxStyle}>
+                  <Text style={styles.textStyle}>Sub Total</Text>
+                  <Text style={styles.textStyle}>Rs. {totalPrice}</Text>
+                </View>
+
+                <View style={styles.viewBoxStyle}>
+                  <Text style={styles.textStyle}>Shipping Tax</Text>
+                  <Text style={styles.textStyle}>Rs. 20</Text>
+                </View>
+
+                <View style={styles.viewBoxBigStyle}>
+                  <Text style={styles.textBigStyle}>Total</Text>
+                  <Text style={styles.textBigStyle}>Rs. {totalPrice + 20}</Text>
+                </View>
+
+                <TouchableOpacity style={{
+                  flexDirection: "row",
+                  width: "80%",
+                  borderRadius: SPACING * 2,
+                  height: SPACING * 6,
+                  marginTop: SPACING * 2,
+                  justifyContent: "space-evenly",
+                  alignItems: "center",
+                  backgroundColor: colors.primary,
+                  opacity: User.address && User.phone ? 1 : 0.2,
+                }}
+                  onPress={() => openPaymentSheet()}
+                >
+                  <Ionicons style={{ color: colors.dark }} name='pricetags' size={SPACING * 3} />
+
+                  <Text style={{
+                    fontFamily: FONTS.bold,
+                    color: colors.white,
+                    fontSize: SPACING * 2.5,
+                  }}>Checkout</Text>
+                </TouchableOpacity>
 
 
-        </View>
+              </View>
+            </>
+          )
+        }
+
+        {
+          cartScreen == "success" &&
+          (
+            <>
+              <View style={{
+                flex: 1,
+                alignItems: "center",
+                marginTop: SPACING,
+                padding: SPACING / 2,
+              }}>
+                <Text style={{
+                  fontFamily: FONTS.bold,
+                  fontSize: SPACING * 2.5,
+                  color: colors['dark-light'],
+                  width: "100%",
+                  textAlign: "center"
+                }}>{`Order is on it's Way!!  🥰️`} </Text>
+
+                <Image
+                  source={delivery}
+                  style={{
+                    width: SPACING * 12,
+                    height: SPACING * 12,
+                    marginTop: SPACING * 2,
+                    ...SHADOWS.dark,
+                  }}
+                />
+
+                <Text style={{
+                  fontFamily: FONTS.bold,
+                  fontSize: SPACING * 2,
+                  marginVertical: SPACING,
+                  color: colors.lightBlue,
+                }}>Oder Summary!!</Text>
+
+                <OrderCard cartItems={cartItems} totalPrice={totalPrice + 20} />
+
+
+                <TouchableOpacity style={{
+                  flexDirection: "row",
+                  justifyContent: "space-around",
+                  alignItems: "center",
+                  borderRadius: SPACING,
+                  padding: SPACING,
+                  width: SPACING * 25,
+                  marginTop: SPACING * 2,
+                  backgroundColor: colors.rose,
+                }}
+                  onPress={() => navigation.navigate('Home')}
+                >
+                  <Ionicons name='arrow-back-circle' color={colors.dark} size={SPACING * 4} />
+                  <Text style={{
+                    fontFamily: FONTS.bold,
+                    fontSize: SPACING * 2.5,
+                    color: colors.dark
+                  }}>Go to Home</Text>
+                </TouchableOpacity>
+
+              </View>
+            </>
+          )
+        }
 
       </SafeAreaView>
     </View>

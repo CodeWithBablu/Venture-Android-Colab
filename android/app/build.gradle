@@ -259,6 +259,9 @@ dependencies {
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
+
+    implementation 'com.facebook.fresco:animated-gif:2.5.0'
+    
     implementation 'com.stripe:stripe-android:20.17.0'
     implementation 'com.google.android.gms:play-services-wallet:19.1.0'
     //noinspection GradleDynamicVersion
