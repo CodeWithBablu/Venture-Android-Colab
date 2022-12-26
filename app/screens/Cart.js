@@ -12,7 +12,7 @@ import { useStateValue } from '../../context/Stateprovider';
 import { useStripe } from '@stripe/stripe-react-native';
 
 
-const API_URL = `http://localhost:5000`;
+const API_URL = `http://192.168.0.105:5000`;
 
 const Cart = () => {
 
@@ -25,56 +25,52 @@ const Cart = () => {
 
   const fetchPaymentSheetParams = async () => {
 
-    // const data = {
-    //   totalAmount: 200,
-    // }
+    const data = {
+      totalAmount: totalPrice + 20,
+    }
 
-    // const response = await fetch('http://localhost:5000/payment-sheet', {
-    //   method: 'POST',
-    //   headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(data),
-    // });
+    console.log(totalPrice);
 
-    // console.log("Popos");
-    // const { paymentIntent, publishableKey } = await response.json();
+    const response = await fetch(`${API_URL}/payment-sheet`, {
+      method: 'POST',
+      headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
 
-    // return {
-    //   paymentIntent,
-    //   publishableKey,
-    // };
+    console.log("Popos");
+    const { paymentIntent, publishableKey } = await response.json();
+
+    return {
+      paymentIntent,
+      publishableKey,
+    };
   };
 
   const initializePaymentSheet = async () => {
-    // const {
-    //   paymentIntent,
-    //   publishableKey,
-    // } = await fetchPaymentSheetParams();
+    const {
+      paymentIntent,
+      publishableKey,
+    } = await fetchPaymentSheetParams();
 
-    console.log("hi");
 
-    const response = await fetch('http://localhost:5000/user', {
-      method: 'POST',
-      mode: 'no-cors',
+
+    const { error } = await initPaymentSheet({
+      merchantDisplayName: "Veture Pvt.Ltd",
+      merchantCountryCode: 'IN',
+      googlePay: true,
+      testEnv: true,
+      existingPaymentMethodRequired: true,
+      paymentIntentClientSecret: paymentIntent,
+      // Set `allowsDelayedPaymentMethods` to true if your business can handle payment
+      //methods that complete payment after a delay, like SEPA Debit and Sofort.
+      // allowsDelayedPaymentMethods: true,
+      defaultBillingDetails: {
+        name: 'Babasaheb',
+      }
+    });
+    if (!error) {
+      setLoading(true);
     }
-    )
-
-    const data = await response.json();
-
-    console.log(data);
-
-    // const { error } = await initPaymentSheet({
-    //   merchantDisplayName: "Veture Pvt.Ltd",
-    //   paymentIntentClientSecret: paymentIntent,
-    //   // Set `allowsDelayedPaymentMethods` to true if your business can handle payment
-    //   //methods that complete payment after a delay, like SEPA Debit and Sofort.
-    //   // allowsDelayedPaymentMethods: true,
-    //   defaultBillingDetails: {
-    //     name: 'Babasaheb',
-    //   }
-    // });
-    // if (!error) {
-    //   setLoading(true);
-    // }
 
   };
 
@@ -82,15 +78,15 @@ const Cart = () => {
     const { error } = await presentPaymentSheet();
 
     if (error) {
-      Alert.alert(`Error code: ${error.code}`, error.message);
+      console.log(`Error code: ${error.code} : ${error.message}`);
     } else {
-      Alert.alert('Success', 'Your order is confirmed!');
+      console.log('Success Your order is confirmed!');
     }
   };
 
   useEffect(() => {
     initializePaymentSheet();
-  }, []);
+  }, [totalPrice]);
 
 
 

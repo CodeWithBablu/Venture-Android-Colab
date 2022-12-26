@@ -259,6 +259,8 @@ dependencies {
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
+    implementation 'com.stripe:stripe-android:20.17.0'
+    implementation 'com.google.android.gms:play-services-wallet:19.1.0'
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation project(":react-native-shared-preferences")

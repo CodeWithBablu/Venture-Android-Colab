@@ -11,7 +11,14 @@
       android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="false"
       android:theme="@style/AppTheme">
-        <meta-data android:name="com.google.ar.core" android:value="optional" />
+      <meta-data
+  android:name="com.google.android.gms.wallet.api.enabled"
+  android:value="true" />
+
+      <meta-data 
+      android:name="com.google.ar.core" 
+      android:value="optional" />
+
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
