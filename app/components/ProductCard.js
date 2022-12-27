@@ -46,13 +46,13 @@ const ProductCard = ({ item }) => {
         }}>
           <Text style={{
             fontFamily: FONTS.bold,
-            fontSize: SPACING * 1.6,
-            color: colors.dark,
+            fontSize: SPACING * 1.4,
+            color: colors.primary,
           }}>{item.name}</Text>
 
           <Text style={{
             fontFamily: FONTS.semiBold,
-            fontSize: SPACING * 1.5,
+            fontSize: SPACING * 1.3,
             color: colors.dark,
           }}>Rs. {item.price}</Text>
 

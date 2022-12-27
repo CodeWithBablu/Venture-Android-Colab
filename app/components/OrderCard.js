@@ -25,9 +25,8 @@ const OrderCard = ({ cartItems, totalPrice }) => {
           (
             <View style={{
               backgroundColor: colors['dark-light'],
-              width: "90%",
+              width: "95%",
               marginTop: SPACING * 2,
-              padding: SPACING,
               borderRadius: SPACING,
             }}>
               {
@@ -41,6 +40,7 @@ const OrderCard = ({ cartItems, totalPrice }) => {
                       width: "100%",
                       flexDirection: "row",
                       alignItems: "center",
+                      paddingHorizontal: SPACING,
                     }}>
 
                     <Image
@@ -56,18 +56,19 @@ const OrderCard = ({ cartItems, totalPrice }) => {
                     />
 
                     <View style={{
+                      width: "100%",
                       borderRadius: SPACING,
-                      marginVertical: SPACING / 2,
                       paddingVertical: SPACING,
-                      paddingLeft: SPACING * 1.8,
-
+                      paddingHorizontal: SPACING * 2,
+                      marginTop: SPACING,
                     }}>
 
                       <Text style={{
+                        textAlign: "left",
                         fontFamily: FONTS.bold,
-                        fontSize: SPACING * 1.5,
+                        fontSize: SPACING * 1.3,
                         color: colors.white,
-                        marginVertical: SPACING / 2,
+                        marginBottom: SPACING * 0.8,
                       }}>{item.name}</Text>
 
                       <Text style={{

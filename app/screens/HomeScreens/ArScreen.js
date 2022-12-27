@@ -21,15 +21,23 @@ function ArScreen({ route, navigation }) {
 
 
   return (
-    <>
-      {NativeModules.NativeUI.navigateToExample()}
-    </>
-    // ?
-    //   <>{NativeModules.NativeUI.navigateToExample()}</>
+    // <>
+    //   {NativeModules.NativeUI.navigateToExample()}
+    // </>
 
-    //   :
+    NativeModules.NativeUI.navigateToExample() ?
 
-    //   goBack()
+      <>{NativeModules.NativeUI.navigateToExample()}</>
+
+      :
+
+      <>
+        {goBack()}
+      </>
+
+
+
+
     // <>
     //   <View style={{
     //     flex: 1,

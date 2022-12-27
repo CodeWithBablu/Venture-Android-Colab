@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView, ScrollView, StatusBar, Text, View } from 'react-native'
+import { Image, SafeAreaView, ScrollView, StatusBar, Text, View } from 'react-native'
 import { FONTS } from '../config'
 import colors from '../config/colors'
 import SPACING from '../config/SPACING'
@@ -11,13 +11,15 @@ import { useSelector } from 'react-redux'
 import { selectUserData } from '../../slices/userSlices'
 import OrderHistoryCard from '../components/orderHistoryCard'
 
-
-// const API_URL = `http://192.168.0.105:5000`;
-const API_URL = `http://192.168.137.221:5000`;
+import orderEmpty from '../../assets/orderEmpty.gif'
 
 
+const API_URL = `http://192.168.0.105:5000`;
 
-const Orders = () => {
+// const API_URL = `http://192.168.137.221:5000`;
+
+
+const Orders = ({ navigation }) => {
 
   var User = useSelector(selectUserData);
 
@@ -26,11 +28,20 @@ const Orders = () => {
 
   const [orders, setOrders] = useState([]);
 
-  useEffect(() => {
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetchOrderHistoryData();
+    });
 
-    fetchOrderHistoryData();
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
 
-  }, [User])
+  // useEffect(() => {
+
+  //   fetchOrderHistoryData();
+
+  // }, [User])
 
   const fetchOrderHistoryData = async () => {
 
@@ -106,25 +117,49 @@ const Orders = () => {
 
           {/* //// start here */}
 
-          <ScrollView
+          {orders.length != 0 && (
 
-            contentContainerStyle={{
+            <ScrollView
+
+              contentContainerStyle={{
+                alignItems: "center",
+              }}
+
+              style={{
+                marginTop: SPACING * 4,
+                marginBottom: SPACING * 10,
+                width: "100%",
+              }}>
+              {
+                orders && (
+                  orders.map((order) => (
+                    <OrderHistoryCard key={order._id} cartItems={order.items} createdAt={order.createdAt} />
+                  ))
+                )
+              }
+            </ScrollView>)}
+
+          {orders.length == 0 && (
+            <View style={{
               alignItems: "center",
-            }}
-
-            style={{
-              marginTop: SPACING * 4,
-              marginBottom: SPACING * 10,
-              width: "100%",
             }}>
-            {
-              orders && (
-                orders.map((order) => (
-                  <OrderHistoryCard key={order._id} cartItems={order.items} createdAt={order.createdAt} />
-                ))
-              )
-            }
-          </ScrollView>
+              <Image
+                source={orderEmpty}
+                style={{
+                  width: SPACING * 25,
+                  height: SPACING * 25,
+                  marginVertical: SPACING * 2,
+                }}
+              />
+
+              <Text style={{
+                fontFamily: FONTS.bold,
+                fontSize: SPACING * 4,
+                marginTop: SPACING * 4,
+              }}>No order history to show 🧐️</Text>
+
+            </View>
+          )}
 
         </View>
 

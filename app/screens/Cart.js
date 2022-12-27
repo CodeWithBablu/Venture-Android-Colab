@@ -21,8 +21,8 @@ import emptyCart from '../../assets/orderNow.gif'
 
 import delivery from '../../assets/emptyCart.gif'
 
-// const API_URL = `http://192.168.0.105:5000`;
-const API_URL = `http://192.168.137.221:5000`;
+const API_URL = `http://192.168.0.105:5000`;
+// const API_URL = `http://192.168.137.221:5000`;
 
 
 
