@@ -21,7 +21,11 @@ import emptyCart from '../../assets/orderNow.gif'
 
 import delivery from '../../assets/emptyCart.gif'
 
-const API_URL = `http://192.168.0.105:5000`;
+
+const API_URL = `https://venture-android-colab-backend.vercel.app`;
+
+
+// const API_URL = `http://192.168.0.105:5000`;
 // const API_URL = `http://192.168.137.221:5000`;
 
 
@@ -84,7 +88,7 @@ const Cart = ({ navigation }) => {
       totalAmount: totalPrice + 20,
     }
 
-    console.log(totalPrice);
+    // console.log(totalPrice);
 
     const response = await fetch(`${API_URL}/payment-sheet`, {
       method: 'POST',

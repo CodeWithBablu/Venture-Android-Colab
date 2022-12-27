@@ -14,7 +14,10 @@ import OrderHistoryCard from '../components/orderHistoryCard'
 import orderEmpty from '../../assets/orderEmpty.gif'
 
 
-const API_URL = `http://192.168.0.105:5000`;
+const API_URL = `https://venture-android-colab-backend.vercel.app`;
+
+
+// const API_URL = `http://192.168.0.105:5000`;
 
 // const API_URL = `http://192.168.137.221:5000`;
 
