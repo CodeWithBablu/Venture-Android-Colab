@@ -1,5 +1,5 @@
 import { BlurView } from 'expo-blur';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView, StyleSheet, Text, View, StatusBar, ScrollView, TouchableOpacity, Image, Dimensions, TextInput } from "react-native";
 import colors from '../config/colors';
 import SPACING from '../config/SPACING';
@@ -23,9 +23,15 @@ const Profile = () => {
 
   var User = useSelector(selectUserData);
 
-
   const [address, setAddress] = useState(User.address);
   const [phone, setPhone] = useState(User.phone)
+
+
+  useEffect(() => {
+    setAddress(User.address);
+    setPhone(User.phone);
+  }, [User])
+
 
   const save_Address = async () => {
 

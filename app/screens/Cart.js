@@ -19,7 +19,7 @@ import { selectUserData } from '../../slices/userSlices';
 
 import emptyCart from '../../assets/orderNow.gif'
 
-import delivery from '../../assets/delivery.gif'
+import delivery from '../../assets/emptyCart.gif'
 
 const API_URL = `http://192.168.0.105:5000`;
 
@@ -70,8 +70,8 @@ const Cart = ({ navigation }) => {
 
   const [loading, setLoading] = useState(false);
 
-  // const [cartScreen, setCartScreen] = useState(cartItems.length > 0 ? "cart" : "emptycart");
-  const [cartScreen, setCartScreen] = useState("success");
+  const [cartScreen, setCartScreen] = useState(cartItems.length > 0 ? "cart" : "emptycart");
+  // const [cartScreen, setCartScreen] = useState("success");
 
 
 
@@ -136,7 +136,7 @@ const Cart = ({ navigation }) => {
       } else {
         console.log('Success Your order is confirmed!');
         setCartScreen("success");
-        clearCart();
+        // clearCart();
         addOrderToDatabase();
       }
     }
@@ -146,7 +146,9 @@ const Cart = ({ navigation }) => {
   };
 
   useEffect(() => {
-    setCartScreen(cartItems.length > 0 ? "cart" : "emptycart");
+
+    if (cartScreen != "success" || cartItems.length == 0)
+      setCartScreen(cartItems.length > 0 ? "cart" : "emptycart");
   }, [cartItems]);
 
   useEffect(() => {
@@ -394,14 +396,15 @@ const Cart = ({ navigation }) => {
                   marginTop: SPACING * 2,
                   backgroundColor: colors.rose,
                 }}
-                  onPress={() => navigation.navigate('Home')}
+                  onPress={() => { clearCart(), navigation.navigate('Home') }}
                 >
                   <Ionicons name='arrow-back-circle' color={colors.dark} size={SPACING * 4} />
                   <Text style={{
                     fontFamily: FONTS.bold,
                     fontSize: SPACING * 2.5,
                     color: colors.dark
-                  }}>Go to Home</Text>
+                  }}
+                  >Go to Home</Text>
                 </TouchableOpacity>
 
               </View>

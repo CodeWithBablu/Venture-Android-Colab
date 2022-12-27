@@ -153,7 +153,7 @@ const HomeScreen = ({ navigation }) => {
         marginBottom: SPACING * 10,
         backgroundColor: colors.dark,
       }}>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{
             padding: SPACING,
             flexDirection: "row",
