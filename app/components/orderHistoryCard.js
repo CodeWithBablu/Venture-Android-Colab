@@ -6,97 +6,85 @@ import SPACING from '../config/SPACING'
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import moment from 'moment';
 
-const OrderHistoryCard = ({ cartItems }) => {
+
+
+const OrderHistoryCard = ({ cartItems, createdAt }) => {
 
   console.log(cartItems);
 
   return (
-    <>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{
-        // flex: 1,
-        alignItems: "center",
-        marginBottom: SPACING,
-      }}
+    <View style={{
+      width: "90%",
+      backgroundColor: colors.orderHistory.primary,
+      marginVertical: SPACING,
+      borderRadius: SPACING * 2,
+    }}>
+      {
+        cartItems && cartItems.map((item) => (
 
-        style={{ width: "100%" }}>
-        {
-          (
-            <View style={{
-              backgroundColor: colors['dark-light'],
+          <View
+            key={item.id}
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
               width: "90%",
-              marginTop: SPACING * 2,
-              padding: SPACING,
-              borderRadius: SPACING,
+              padding: SPACING / 2,
+              paddingHorizontal: SPACING,
             }}>
-              {
-                cartItems && cartItems.map((item) => (
 
-                  <View
+            <Image
+              style={{
+                width: SPACING * 5,
+                height: SPACING * 5,
+                borderRadius: SPACING * 2,
+              }}
 
-                    key={item.id}
+              resizeMode="contain"
 
-                    style={{
-                      width: "100%",
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}>
+              source={item.image}
+            />
 
-                    <Image
-                      style={{
-                        width: SPACING * 5,
-                        height: SPACING * 5,
-                        borderRadius: SPACING * 2,
-                      }}
+            <View style={{
+              borderRadius: SPACING,
+              marginVertical: SPACING / 2,
+              paddingVertical: SPACING,
+              paddingLeft: SPACING * 1.8,
 
-                      resizeMode="contain"
+            }}>
 
-                      source={item.image}
-                    />
+              <Text style={{
+                fontFamily: FONTS.bold,
+                fontSize: SPACING * 1.5,
+                color: colors.dark,
+                marginVertical: SPACING / 2,
+              }}>{item.name}</Text>
 
-                    <View style={{
-                      borderRadius: SPACING,
-                      marginVertical: SPACING / 2,
-                      paddingVertical: SPACING,
-                      paddingLeft: SPACING * 1.8,
+              <Text style={{
+                fontFamily: FONTS.semiBold,
+                fontSize: SPACING * 1.4,
+                color: colors.light,
+                marginLeft: SPACING * 3,
+              }}>quantity: {item.quantity}</Text>
 
-                    }}>
-
-                      <Text style={{
-                        fontFamily: FONTS.bold,
-                        fontSize: SPACING * 1.5,
-                        color: colors.white,
-                        marginVertical: SPACING / 2,
-                      }}>{item.name}</Text>
-
-                      <Text style={{
-                        fontFamily: FONTS.semiBold,
-                        fontSize: SPACING * 1.4,
-                        color: colors.primary,
-                        marginLeft: SPACING * 3,
-                      }}>quantity: {item.quantity}</Text>
-
-                    </View>
-
-                  </View>
-
-
-                ))
-              }
             </View>
-          )
-        }
-      </ScrollView>
+
+          </View>
+
+
+        ))
+      }
 
       <View style={{
-        flexDirection: "row",
+        flexDirection: "column",
         alignItems: "center",
-        width: "95%",
+        width: "100%",
         padding: SPACING * 2,
         marginTop: SPACING,
         paddingHorizontal: SPACING * 2,
         borderWidth: 2.5,
-        borderColor: colors.cart.buttonsec,
+        borderColor: colors['dark-light'],
         borderStyle: 'dashed',
         borderLeftWidth: 0,
         borderBottomWidth: 0,
@@ -104,21 +92,50 @@ const OrderHistoryCard = ({ cartItems }) => {
         justifyContent: "space-between",
       }}>
 
-        <Text style={{
-          fontFamily: FONTS.semiBold,
-          fontSize: SPACING * 2,
-          color: colors.icon,
-        }}>Total:</Text>
+        <View style={{
+          width: "100%",
+          flexDirection: "row",
+          justifyContent: "space-between"
+        }}>
 
-        <Text style={{
-          fontFamily: FONTS.semiBold,
-          fontSize: SPACING * 2,
-          color: colors.icon,
-        }}>Rs.</Text>
+          <Text style={{
+            fontFamily: FONTS.semiBold,
+            fontSize: SPACING * 1.6,
+            color: colors.icon,
+          }}>Order on : </Text>
+
+          <Text style={{
+            fontFamily: FONTS.semiBold,
+            fontSize: SPACING * 1.6,
+            color: colors.primary,
+          }}>{moment(createdAt).format("DD MM YYYY hh:mm:ss")}</Text>
+
+        </View>
+
+        <View style={{
+          width: "100%",
+          flexDirection: "row",
+          justifyContent: "space-between"
+        }}>
+
+          <Text style={{
+            fontFamily: FONTS.semiBold,
+            fontSize: SPACING * 1.6,
+            color: colors.icon,
+          }}>Shipped at :</Text>
+
+          <Text style={{
+            fontFamily: FONTS.semiBold,
+            fontSize: SPACING * 1.6,
+            color: colors.primary,
+          }}>{moment(createdAt).add(3, 'day').format("DD MM YYYY hh:mm:ss")}</Text>
+
+        </View>
+
+
       </View>
 
-
-    </>
+    </View>
   )
 }
 

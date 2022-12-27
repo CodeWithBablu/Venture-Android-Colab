@@ -30,6 +30,9 @@ export default {
     backsec: '#F6F6F7',
     button: '#E55B37',
     buttonsec: '#F9CBB6'
+  },
+  orderHistory: {
+    primary: '#c6ec37'
   }
 };
 

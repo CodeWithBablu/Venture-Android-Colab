@@ -12,7 +12,9 @@ import { selectUserData } from '../../slices/userSlices'
 import OrderHistoryCard from '../components/orderHistoryCard'
 
 
-const API_URL = `http://192.168.0.105:5000`;
+// const API_URL = `http://192.168.0.105:5000`;
+const API_URL = `http://192.168.137.221:5000`;
+
 
 
 const Orders = () => {
@@ -74,7 +76,7 @@ const Orders = () => {
             fontFamily: FONTS.bold,
             fontSize: SPACING * 3,
             color: colors.dark,
-          }}>history</Text>
+          }}>history~</Text>
         </View>
 
         <View style={{
@@ -104,14 +106,21 @@ const Orders = () => {
 
           {/* //// start here */}
 
-          <ScrollView style={{
-            marginTop: SPACING * 4,
-            marginBottom: SPACING * 10,
-          }}>
+          <ScrollView
+
+            contentContainerStyle={{
+              alignItems: "center",
+            }}
+
+            style={{
+              marginTop: SPACING * 4,
+              marginBottom: SPACING * 10,
+              width: "100%",
+            }}>
             {
               orders && (
                 orders.map((order) => (
-                  <OrderHistoryCard key={order._id} cartItems={order.items} />
+                  <OrderHistoryCard key={order._id} cartItems={order.items} createdAt={order.createdAt} />
                 ))
               )
             }

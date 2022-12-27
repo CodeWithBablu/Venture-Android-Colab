@@ -9,7 +9,7 @@ import colors from "../../config/colors";
 import { BlurView } from "expo-blur";
 import { useStateValue } from "../../../context/Stateprovider";
 
-var SharedPreferences = require('react-native-shared-preferences');
+// var SharedPreferences = require('react-native-shared-preferences');
 
 const { height, width } = Dimensions.get("window");
 
@@ -20,10 +20,10 @@ const ProductDetails = ({ route, navigation }) => {
   const { cartItems, totalPrice, setTotalQty, setTotalPrice, setCartItems, onRemove, onAdd } = useStateValue();
 
 
-  useEffect(() => {
-    SharedPreferences.setName("Product");
-    SharedPreferences.setItem("productName", product.name);
-  }, [])
+  // useEffect(() => {
+  //   SharedPreferences.setName("Product");
+  //   SharedPreferences.setItem("productName", product.name);
+  // }, [])
 
   const [activeSize, setActiveSize] = useState("S");
 
