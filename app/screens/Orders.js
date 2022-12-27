@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView, ScrollView, StatusBar, Text, View } from 'react-native'
 import { FONTS } from '../config'
 import colors from '../config/colors'
@@ -7,10 +7,46 @@ import SPACING from '../config/SPACING'
 import OrderHistory from '../components/OrderHistory'
 
 import cartProducts from '../config/cartProducts'
+import { useSelector } from 'react-redux'
+import { selectUserData } from '../../slices/userSlices'
+import OrderHistoryCard from '../components/orderHistoryCard'
+
+
+const API_URL = `http://192.168.0.105:5000`;
+
 
 const Orders = () => {
 
+  var User = useSelector(selectUserData);
+
+
   const [items, setItems] = useState(cartProducts);
+
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+
+    fetchOrderHistoryData();
+
+  }, [User])
+
+  const fetchOrderHistoryData = async () => {
+
+    const data = {
+      cus_email: User.email,
+    }
+
+    const res = await fetch(`${API_URL}/get-order-history`, {
+      method: 'POST',
+      headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+
+    const orders = await res.json();
+
+    setOrders(orders);
+
+  }
 
 
   return (
@@ -44,7 +80,7 @@ const Orders = () => {
         <View style={{
           flex: 1,
           alignItems: "center",
-          marginTop: SPACING * 8,
+          marginTop: SPACING * 5,
           backgroundColor: colors.dark,
           borderTopLeftRadius: SPACING * 5,
           borderTopRightRadius: SPACING * 5,
@@ -73,9 +109,11 @@ const Orders = () => {
             marginBottom: SPACING * 10,
           }}>
             {
-              items && items.map((item) => (
-                <OrderHistory key={item.id} item={item} />
-              ))
+              orders && (
+                orders.map((order) => (
+                  <OrderHistoryCard key={order._id} cartItems={order.items} />
+                ))
+              )
             }
           </ScrollView>
 
